@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        div.gallery {
+            margin: 5px;
+            float: left;
+            width: 60px;
+        }
+        .text-clear {
+            clear: both;
+        }
+        .input-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border: 3px solid blue;
+            font-size: 25px;
+        }
+
+        .to-be-reached {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 410px;
+            height: 50px;
+            border: 3px solid red;
+            font-size: 25px;
+        }
+        #solution {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 410px;
+            height: 50px;
+            border: 3px solid green;
+            font-size: 25px;
+        }
+
+        #myProgress {
+            /*width: 100%;*/
+            width: 410px;
+            background-color: #ddd;
+        }
+
+        #myBar {
+            width: 1%;
+            height: 30px;
+            background-color: #04AA6D;
+        }
+
+    </style>
+    <body onload="move()">
+
+        <div class="to-be-reached">{{toBeReached}}</div>
+        {{#each input}}<div class="gallery"><div class="input-number">{{this}}</div></div>{{/each}}
+        </br></br></br></br>
+
+        <div id="myProgress">
+            <div id="myBar"></div>
+        </div>
+
+        </br>
+        <div id="solution">Antwoord</div>
+
+        <br>
+        <button onclick="location.reload()">Click Me</button>
+
+        <script>
+            function move() {
+                var secondsToThink = 45;
+                var elem = document.getElementById("myBar");
+                var output = document.getElementById("solution");
+                output.innerHTML = "";
+                var width = (100/secondsToThink);
+                var id = setInterval(frame, 1000);
+                function frame() {
+                    if (width >= 100) {
+                        output.innerHTML = "{{solution}}";
+                        clearInterval(id);
+                    } else {
+                        width=width+(100/secondsToThink);
+                        elem.style.width = width + "%";
+                    }
+                }
+            }
+        </script>
+
+    </body>
+</html>
