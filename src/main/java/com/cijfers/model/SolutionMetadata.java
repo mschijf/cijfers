@@ -1,4 +1,4 @@
-package com.example.cijfers.model;
+package com.cijfers.model;
 
 import java.util.ArrayList;
 

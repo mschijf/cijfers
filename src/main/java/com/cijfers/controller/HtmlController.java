@@ -1,6 +1,6 @@
-package com.example.cijfers.controller;
+package com.cijfers.controller;
 
-import com.example.cijfers.view.HtmlPageService;
+import com.cijfers.view.HtmlPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.example.cijfers.service.inputRules;
+package com.cijfers.service.inputRules;
 
 import java.util.ArrayList;
 import java.util.Random;

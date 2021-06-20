@@ -1,9 +1,9 @@
-package com.example.cijfers.controller;
+package com.cijfers.controller;
 
-import com.example.cijfers.model.CijfersData;
-import com.example.cijfers.service.CijfersService;
-import com.example.cijfers.service.inputRules.RandomCijfersArrayList;
-import com.example.cijfers.service.inputRules.RandomToBeReached;
+import com.cijfers.model.CijfersData;
+import com.cijfers.service.CijfersService;
+import com.cijfers.service.inputRules.RandomCijfersArrayList;
+import com.cijfers.service.inputRules.RandomToBeReached;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

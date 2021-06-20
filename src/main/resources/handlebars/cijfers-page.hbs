@@ -65,16 +65,26 @@
         <div id="solution">Antwoord</div>
 
         <br>
-        <button onclick="location.reload()">Click Me</button>
+        <button onclick="location.reload()">New</button>
+        <button onclick="show()">Stop</button>
 
         <script>
+            var id;
+            function show() {
+                clearInterval(id);
+                var elem = document.getElementById("myBar");
+                var output = document.getElementById("solution");
+                output.innerHTML = "{{solution}}";
+                elem.style.width = "100%";
+            }
+
             function move() {
                 var secondsToThink = 45;
                 var elem = document.getElementById("myBar");
                 var output = document.getElementById("solution");
                 output.innerHTML = "";
                 var width = (100/secondsToThink);
-                var id = setInterval(frame, 1000);
+                id = setInterval(frame, 1000);
                 function frame() {
                     if (width >= 100) {
                         output.innerHTML = "{{solution}}";

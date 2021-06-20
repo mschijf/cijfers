@@ -1,4 +1,4 @@
-package com.example.cijfers.controller;
+package com.cijfers.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

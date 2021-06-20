@@ -1,4 +1,4 @@
-package com.example.cijfers.service.calculation;
+package com.cijfers.service.calculation;
 
 import java.util.ArrayList;
 

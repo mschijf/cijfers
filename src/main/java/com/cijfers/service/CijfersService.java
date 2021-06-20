@@ -1,9 +1,10 @@
-package com.example.cijfers.service;
+package com.cijfers.service;
 
-import com.example.cijfers.model.CijfersData;
-import com.example.cijfers.model.SolutionMetadata;
-import com.example.cijfers.service.calculation.Expression;
-import com.example.cijfers.service.calculation.Game;
+import com.cijfers.model.CijfersData;
+import com.cijfers.model.SolutionMetadata;
+import com.cijfers.service.calculation.Expression;
+import com.cijfers.service.calculation.Game;
+import com.cijfers.view.HtmlPageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class CijfersService {
         double ms = (Duration.between(start, Instant.now()).toMillis()/1000.0);
         SolutionMetadata metaData = new SolutionMetadata(ms, Expression.operationCount);
         CijfersData data = new CijfersData(input, toBeReached, result.toString(),metaData);
+
+        log.info("input {} ==> {} : {}", input, toBeReached, result.toString());
         return Optional.of(data);
     }
 }

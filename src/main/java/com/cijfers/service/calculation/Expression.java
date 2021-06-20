@@ -1,4 +1,4 @@
-package com.example.cijfers.service.calculation;
+package com.cijfers.service.calculation;
 
 import static java.lang.Math.abs;
 
@@ -70,6 +70,9 @@ public class Expression {
     }
 
     public static Expression closestToTarget(Expression a, Expression b, Expression target) {
+        if (a == null) return b;
+        if (b == null) return a;
+
         int resultA = abs(a.result-target.result);
         int resultB = abs(b.result-target.result);
         if (resultA == resultB) {

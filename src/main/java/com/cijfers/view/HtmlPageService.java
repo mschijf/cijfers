@@ -1,9 +1,9 @@
-package com.example.cijfers.view;
+package com.cijfers.view;
 
-import com.example.cijfers.model.CijfersData;
-import com.example.cijfers.service.CijfersService;
-import com.example.cijfers.service.inputRules.RandomCijfersArrayList;
-import com.example.cijfers.service.inputRules.RandomToBeReached;
+import com.cijfers.model.CijfersData;
+import com.cijfers.service.CijfersService;
+import com.cijfers.service.inputRules.RandomCijfersArrayList;
+import com.cijfers.service.inputRules.RandomToBeReached;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
