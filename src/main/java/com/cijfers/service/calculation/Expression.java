@@ -5,68 +5,69 @@ import static java.lang.Math.abs;
 
 public class Expression {
     public enum Operation {
-        ADD,
-        SUBTRACT_LARGEST_BY_SMALLEST,
-        MULTIPLY,
-        DIVIDE_LARGEST_BY_SMALLEST
+        ADD("+"),
+        SUBTRACT_LARGEST_BY_SMALLEST("-"),
+        MULTIPLY("x"),
+        DIVIDE_LARGEST_BY_SMALLEST("/");
+
+        public final String asString;
+
+        Operation(String asString) {
+            this.asString = asString;
+        }
     }
 
     public static int operationCount = 0;
 
-    int result;
-    String expressionString;
-
-    public static final Expression ZERO = fromInt(0);
-    public static final Expression MINIMUM = fromInt(-999999999);
+    private final Integer constant;
+    private final Expression left;
+    private final Expression right;
+    private final Operation op;
+    private final int result;
+    private final int opsCount;
 
     public static Expression fromInt(int a) { return new Expression(a); }
 
-    private Expression(int result) {
-        this(result, Integer.toString(result));
+    private Expression(int constant) {
+        this.constant = constant;
+        this.left = null;
+        this.right = null;
+        this.op = null;
+        this.result = constant;
+        this.opsCount = 0;
     }
 
-    private Expression(int result, String expressionString) {
-        this.result = result;
-        this.expressionString = expressionString;
+    private Expression(Expression left, Operation op, Expression right) {
+        this.constant = null;
+        this.left = left;
+        this.right = right;
+        this.op = op;
+        this.result = f(op, left.result, right.result);
+        this.opsCount = left.opsCount + right.opsCount + 1;
     }
 
-    public Expression f(Operation op, Expression other) {
-        ++operationCount;
+    private int f(Operation op, int left, int right) {
         switch(op) {
             case ADD:
-                return add(other);
+                return left + right;
             case SUBTRACT_LARGEST_BY_SMALLEST:
-                return absoluteDifference(other);
+                return left > right ? left-right : right-left;
             case MULTIPLY:
-                return multiply(other);
+                return left * right;
             case DIVIDE_LARGEST_BY_SMALLEST:
-                return divideLargestBySmallest(other);
+                if (right != 0  && left % right == 0)
+                    return left / right;
+                else if (left != 0  && right % left == 0)
+                    return right / left;
+                else
+                    return 0;
         }
         throw new ArithmeticException("Unknown Operation");
     }
 
-    public Expression add(Expression other) {
-        return new Expression(this.result + other.result, "(" + this.expressionString + " + " + other.expressionString + ")");
-    }
-
-    public Expression absoluteDifference(Expression other) {
-        if (this.smaller(other)) {
-            return new Expression(other.result - this.result, "(" + other.expressionString + " - " + this.expressionString + ")");
-        }
-        return new Expression(this.result - other.result, "(" + this.expressionString + " - " + other.expressionString + ")");
-    }
-
-    public Expression multiply(Expression other) {
-        return new Expression(this.result * other.result, this.expressionString + " x " + other.expressionString);
-    }
-
-    public Expression divideLargestBySmallest(Expression other) {
-        if ((other.result != 0) && (this.result % other.result == 0)) {
-            return new Expression(this.result / other.result, "(" + this.expressionString + " / " + other.expressionString + ")");
-        } else if ((this.result != 0) && (other.result % this.result == 0)) {
-            return new Expression(other.result / this.result, "(" + other.expressionString + " / " + this.expressionString + ")");
-        }
-        return null;
+    public Expression f(Operation op, Expression other) {
+        ++operationCount;
+        return new Expression(this, op, other);
     }
 
     public static Expression closestToTarget(Expression a, Expression b, Expression target) {
@@ -76,7 +77,7 @@ public class Expression {
         int resultA = abs(a.result-target.result);
         int resultB = abs(b.result-target.result);
         if (resultA == resultB) {
-            if (a.expressionString.length() < b.expressionString.length() ) {
+            if (a.opsCount < b.opsCount ) {
                 return a;
             } else {
                 return b;
@@ -99,9 +100,22 @@ public class Expression {
         return (this.result != 0);
     }
 
+    public static final Expression ZERO = fromInt(0);
+    public static final Expression MINIMUM = fromInt(-999999999);
+    public static final Expression MAXIMUM = fromInt(999999999);
+
     @Override
     public String toString() {
-        return expressionString + " = " + result;
+        return expressionToString() + " = " + result;
     }
 
+    private String expressionToString() {
+        if (constant != null)
+            return Integer.toString(constant);
+        if (op != Operation.MULTIPLY) {
+            return "(" + left.expressionToString() + " " + op.asString + " " + right.expressionToString() + ")";
+        } else {
+            return left.expressionToString() + " " + op.asString + " " + right.expressionToString();
+        }
+    }
 }
