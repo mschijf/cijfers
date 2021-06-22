@@ -23,9 +23,9 @@ public class TreePart {
         list = new ArrayList<>();
         for (Expression.Operation op1: Expression.Operation.values()) {
             for (Expression.Operation op2: Expression.Operation.values()) {
-                Expression valueRight = b.f(op2, c);
-                if (valueRight != null && valueRight.isNotZero()) {
-                    Expression value = a.f(op1, valueRight);
+                Expression valueLeft = a.f(op2, b);
+                if (valueLeft != null && valueLeft.isNotZero()) {
+                    Expression value = valueLeft.f(op1, c);
                     if (value != null && value.isNotZero())
                         list.add(value);
                 }
