@@ -104,18 +104,66 @@ public class Expression {
     public static final Expression MINIMUM = fromInt(-999999999);
     public static final Expression MAXIMUM = fromInt(999999999);
 
-    @Override
-    public String toString() {
-        return expressionToString() + " = " + result;
+    public int toInt() {
+        return result;
     }
 
-    private String expressionToString() {
+    @Override
+    public String toString() {
+        return expressionToString(null, false) + " = " + result;
+    }
+
+    private String expressionToString(Expression parent, boolean isLeft) {
         if (constant != null)
             return Integer.toString(constant);
-        if (op != Operation.MULTIPLY) {
-            return "(" + left.expressionToString() + " " + op.asString + " " + right.expressionToString() + ")";
+        String middle = " " + op.asString + " ";
+        String exprStr;
+        if (op == Operation.DIVIDE_LARGEST_BY_SMALLEST || op == Operation.SUBTRACT_LARGEST_BY_SMALLEST) {
+            if (left.result < right.result) {
+                exprStr = right.expressionToString(this, true) + middle + left.expressionToString(this, false);
+            } else {
+                exprStr = left.expressionToString(this, true) + middle + right.expressionToString(this, false);
+            }
         } else {
-            return left.expressionToString() + " " + op.asString + " " + right.expressionToString();
+            if (left.result < right.result) {
+                exprStr = left.expressionToString(this, true) + middle + right.expressionToString(this, false);
+            } else {
+                exprStr = right.expressionToString(this, true) + middle + left.expressionToString(this, false);
+            }
         }
+        if (parenthesisNeeded(parent, isLeft)) {
+            return "(" + exprStr + ")";
+        } else {
+            return exprStr;
+        }
+    }
+
+    private boolean parenthesisNeeded(Expression parent, boolean isLeft) {
+        if (parent == null)
+            return false;
+        if (op == Operation.MULTIPLY)
+            return false;
+        if (op == Operation.DIVIDE_LARGEST_BY_SMALLEST) {
+            if (isLeft && parent.op != Operation.MULTIPLY)
+                return false;
+            if (!isLeft && parent.op != Operation.DIVIDE_LARGEST_BY_SMALLEST)
+                return false;
+            return true;
+        }
+        if (op == Operation.ADD) {
+            if (parent.op == Operation.ADD)
+                return false;
+            if (isLeft && parent.op == Operation.DIVIDE_LARGEST_BY_SMALLEST)
+                return false;
+            return true;
+        }
+        if (op == Operation.SUBTRACT_LARGEST_BY_SMALLEST) {
+            if (parent.op == Operation.ADD)
+                return false;
+            if (isLeft && op == Operation.SUBTRACT_LARGEST_BY_SMALLEST)
+                return false;
+            return true;
+        }
+        return true;
     }
 }

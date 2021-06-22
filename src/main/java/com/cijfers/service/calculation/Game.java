@@ -1,13 +1,17 @@
 package com.cijfers.service.calculation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Game {
     //fixme: conceptually it doesn't work well, when inputserie has more than 7 numbers.
 
     private static final boolean STOP_WHEN_SOLUTION_FOUND = false;
+    private static HashMap<Integer, TreePart> cacheTreePart;
 
     public static Expression findNearestSolution(ArrayList<Integer> inputSerie, int intToBeReached) {
+        cacheTreePart = new HashMap<>();
         Expression bestResult = Expression.MINIMUM;
         Expression toBeReached = Expression.fromInt(intToBeReached);
         Expression[] inputExpressions = new Expression[inputSerie.size()];
@@ -141,18 +145,50 @@ public class Game {
         for (int treeSize=0; treeSize < treeFormTopology.length(); ++treeSize) {
             switch(treeFormTopology.charAt(treeSize)) {
                 case '3':
-                    treeForm.add(new TreePart(serie[index++], serie[index++], serie[index++]));
+                    treeForm.add(fromCache(serie[index++], serie[index++], serie[index++]));
                     break;
                 case '2':
-                    treeForm.add(new TreePart(serie[index++], serie[index++]));
+                    treeForm.add(fromCache(serie[index++], serie[index++]));
                     break;
                 case '1':
-                    treeForm.add(new TreePart(serie[index++]));
+                    treeForm.add(fromCache(serie[index++]));
                     break;
             }
         }
         return treeForm;
     }
 
+    private static TreePart fromCache(Expression a, Expression b, Expression c) {
+        Integer key;
+        if (a.smaller(b)) {
+            key = 1_000_000 * a.toInt() + 1_0000 * b.toInt() + c.toInt();
+        } else {
+            key = 1_000_000 * b.toInt() + 1_0000 * a.toInt() + c.toInt();
+        }
+        TreePart treePart = cacheTreePart.get(key);
+        if (treePart == null) {
+            treePart = new TreePart(a, b, c);
+            cacheTreePart.put(key, treePart);
+        }
+        return treePart;
+    }
+
+    private static TreePart fromCache(Expression a, Expression b) {
+        Integer key;
+        if (a.smaller(b)) {
+            key = 1_000 * a.toInt() + b.toInt();
+        } else {
+            key = 1_000 * b.toInt() + a.toInt();
+        }
+        TreePart treePart = cacheTreePart.get(key);
+        if (treePart == null) {
+            treePart = new TreePart(a, b);
+            cacheTreePart.put(key, treePart);
+        }
+        return treePart;
+    }
+    private static TreePart fromCache(Expression a) {
+        return new TreePart(a);
+    }
 
 }
