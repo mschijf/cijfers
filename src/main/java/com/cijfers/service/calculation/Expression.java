@@ -10,7 +10,7 @@ public class Expression {
         MULTIPLY("x"),
         DIVIDE_LARGEST_BY_SMALLEST("/");
 
-        public final String asString;
+        private final String asString;
 
         Operation(String asString) {
             this.asString = asString;
