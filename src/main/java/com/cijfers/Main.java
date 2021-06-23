@@ -10,10 +10,10 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Integer> serie = new ArrayList<>(Arrays.asList(3, 100, 10, 2, 5, 9));
-        int toBeReached = 766;
-//        ArrayList<Integer> serie = new ArrayList<>(Arrays.asList(10,5,10,10,4,100));
-//        int toBeReached = 979;
+//        ArrayList<Integer> serie = new ArrayList<>(Arrays.asList(3, 100, 10, 2, 5, 9));
+//        int toBeReached = 766;
+        ArrayList<Integer> serie = new ArrayList<>(Arrays.asList(1,10,6,7,25,4));
+        int toBeReached = 736;
 
         for (Integer number : serie)
             System.out.print(number + " ");

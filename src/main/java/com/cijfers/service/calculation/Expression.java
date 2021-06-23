@@ -160,7 +160,7 @@ public class Expression {
         if (op == Operation.SUBTRACT_LARGEST_BY_SMALLEST) {
             if (parent.op == Operation.ADD)
                 return false;
-            if (isLeft && op == Operation.SUBTRACT_LARGEST_BY_SMALLEST)
+            if (isLeft && parent.op == Operation.SUBTRACT_LARGEST_BY_SMALLEST)
                 return false;
             return true;
         }
